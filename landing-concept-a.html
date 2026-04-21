@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdapTier — Industrial Automation Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1f2937;
+    --border: #30363d;
+    --accent: #f5a623;
+    --accent-dim: rgba(245,166,35,0.15);
+    --accent-glow: rgba(245,166,35,0.4);
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --green: #3fb950;
+    --red: #f85149;
+    --blue: #58a6ff;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 2rem;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(13,17,23,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent); color: #0d1117;
+    padding: 0.45rem 1.1rem; border-radius: 4px;
+    font-size: 0.875rem; font-weight: 700; font-family: var(--mono);
+    text-decoration: none; transition: box-shadow 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .nav-cta:hover { box-shadow: 0 0 20px var(--accent-glow); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: center;
+    padding: 100px 6rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(245,166,35,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,166,35,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: grid-drift 20s linear infinite;
+  }
+  @keyframes grid-drift { 0% { transform: translate(0,0); } 100% { transform: translate(40px,40px); } }
+  .hero-gradient {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse 80% 60% at 60% 50%, rgba(245,166,35,0.06) 0%, transparent 70%);
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--accent-dim); border: 1px solid rgba(245,166,35,0.3);
+    padding: 0.3rem 0.75rem; border-radius: 2px;
+    font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero-badge::before { content: '●'; font-size: 0.6rem; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero p {
+    font-size: 1.05rem; color: var(--muted);
+    max-width: 480px; margin-bottom: 2rem; line-height: 1.7;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .btn-primary {
+    background: var(--accent); color: #0d1117;
+    padding: 0.75rem 1.5rem; border-radius: 4px;
+    font-size: 0.9rem; font-weight: 700; font-family: var(--mono);
+    text-decoration: none; transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    padding: 0.75rem 1.5rem; border-radius: 4px;
+    border: 1px solid var(--border);
+    font-size: 0.9rem; font-weight: 500; font-family: var(--mono);
+    text-decoration: none; transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-stats { display: flex; gap: 2rem; }
+  .stat { }
+  .stat-value { font-family: var(--mono); font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* TERMINAL STREAM */
+  .hero-visual { position: relative; z-index: 1; }
+  .terminal {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(245,166,35,0.1), 0 24px 64px rgba(0,0,0,0.5);
+  }
+  .terminal-bar {
+    background: var(--surface);
+    padding: 0.75rem 1rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #f85149; }
+  .dot-y { background: #d29922; }
+  .dot-g { background: #3fb950; }
+  .terminal-title { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); margin-left: 0.5rem; }
+  .terminal-status { margin-left: auto; display: flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.7rem; color: var(--green); }
+  .terminal-status::before { content: '●'; animation: pulse 1.5s ease-in-out infinite; }
+  .terminal-body { padding: 1rem; font-family: var(--mono); font-size: 0.72rem; line-height: 1.9; height: 340px; overflow: hidden; position: relative; }
+  .stream-lines { animation: stream-scroll 12s linear infinite; }
+  @keyframes stream-scroll { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+  .line { display: flex; gap: 0.75rem; }
+  .ts { color: #555e6b; min-width: 85px; }
+  .path { color: var(--blue); }
+  .val { color: var(--accent); font-weight: 600; }
+  .unit { color: var(--muted); }
+  .ok { color: var(--green); }
+  .err { color: var(--red); }
+  .fade-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 80px;
+    background: linear-gradient(transparent, #0d1117);
+    pointer-events: none;
+  }
+
+  /* PROTOCOLS BELT */
+  .protocols-section {
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .protocols-label {
+    text-align: center;
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .marquee-track { display: flex; gap: 1rem; width: max-content; animation: marquee 18s linear infinite; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .proto-chip {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 0.45rem 1rem; border-radius: 3px;
+    font-family: var(--mono); font-size: 0.78rem; color: var(--text);
+    white-space: nowrap; transition: border-color 0.2s;
+  }
+  .proto-chip:hover { border-color: var(--accent); }
+  .proto-chip .indicator { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+  /* FEATURES */
+  section { padding: 5rem 6rem; }
+  .section-label {
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: var(--mono); font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 1rem;
+  }
+  .section-sub { font-size: 1rem; color: var(--muted); max-width: 540px; }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 3rem; }
+  .feature-card {
+    background: var(--surface); padding: 2rem;
+    transition: background 0.2s;
+  }
+  .feature-card:hover { background: var(--surface2); }
+  .feature-icon {
+    width: 40px; height: 40px; margin-bottom: 1.25rem;
+    background: var(--accent-dim); border: 1px solid rgba(245,166,35,0.25);
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .feature-card h3 { font-family: var(--mono); font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+  .feature-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+  .feature-tag {
+    display: inline-block; margin-top: 1rem;
+    font-family: var(--mono); font-size: 0.68rem; color: var(--accent);
+    background: var(--accent-dim); padding: 0.2rem 0.5rem; border-radius: 2px;
+  }
+
+  /* ARCHITECTURE */
+  .arch-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .arch-inner { max-width: 900px; margin: 0 auto; }
+  .arch-diagram { margin-top: 3rem; }
+  .arch-flow { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: nowrap; }
+  .arch-node {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 1.25rem 1.5rem; text-align: center;
+    min-width: 120px;
+  }
+  .arch-node .node-icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .arch-node .node-label { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .arch-node .node-name { font-family: var(--mono); font-size: 0.85rem; font-weight: 600; color: var(--text); margin-top: 0.2rem; }
+  .arch-arrow { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0 0.5rem; flex-shrink: 0; }
+  .arch-line { width: 50px; height: 2px; background: var(--border); position: relative; overflow: hidden; }
+  .arch-line::after {
+    content: ''; position: absolute; top: 0; left: -100%; width: 40px; height: 100%;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    animation: data-flow 2s ease-in-out infinite;
+  }
+  .arch-line:nth-child(2)::after { animation-delay: 0.4s; }
+  .arch-line:nth-child(3)::after { animation-delay: 0.8s; }
+  .arch-line:nth-child(4)::after { animation-delay: 1.2s; }
+  @keyframes data-flow { 0% { left: -100%; } 100% { left: 200%; } }
+  .arch-proto { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); text-align: center; margin-top: 0.3rem; }
+
+  /* HOW IT WORKS */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+  .step { position: relative; }
+  .step-num {
+    font-family: var(--mono); font-size: 3rem; font-weight: 700;
+    color: var(--accent-dim); line-height: 1; margin-bottom: 1rem;
+    -webkit-text-stroke: 1px rgba(245,166,35,0.2);
+    color: transparent;
+  }
+  .step h3 { font-family: var(--mono); font-size: 0.95rem; color: var(--text); margin-bottom: 0.5rem; }
+  .step p { font-size: 0.875rem; color: var(--muted); }
+  .step::after {
+    content: '→'; position: absolute; top: 0.5rem; right: -1.25rem;
+    font-size: 1.2rem; color: var(--border);
+    display: none;
+  }
+
+  /* FINAL CTA */
+  .cta-section {
+    background: linear-gradient(135deg, #0d1117 0%, #1a1000 50%, #0d1117 100%);
+    border-top: 1px solid var(--border);
+    text-align: center; padding: 6rem;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at center, rgba(245,166,35,0.08) 0%, transparent 70%);
+  }
+  .cta-content { position: relative; z-index: 1; }
+  .cta-section h2 { font-family: var(--mono); font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; }
+  .cta-section p { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .cta-buttons { display: flex; gap: 1rem; justify-content: center; }
+
+  /* FOOTER */
+  footer {
+    background: var(--surface); border-top: 1px solid var(--border);
+    padding: 2rem 6rem; display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo { font-family: var(--mono); font-size: 0.9rem; color: var(--muted); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--text); }
+
+  @media (max-width: 960px) {
+    .hero { grid-template-columns: 1fr; padding: 100px 2rem 4rem; }
+    .hero-visual { display: none; }
+    section { padding: 3rem 2rem; }
+    .features-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .arch-flow { flex-wrap: wrap; gap: 1rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">// <span>AdapTier</span></a>
+  <ul class="nav-links">
+    <li><a href="#">Product</a></li>
+    <li><a href="#">Protocol Support</a></li>
+    <li><a href="#">Docs</a></li>
+    <li><a href="#">Pricing</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Get Started →</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-gradient"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">IEC 61131-3 Certified Runtime</div>
+    <h1>Connect <em>every</em><br>field protocol<br>to NATS JetStream.</h1>
+    <p>AdapTier bridges Modbus TCP, M-bus, OPC-UA, BACnet, and HTTP to NATS JetStream — with a browser-based PLC IDE, hot-reload config, and one-command edge deployment.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Start Free Trial</a>
+      <a href="#" class="btn-secondary">View Docs →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-value">5+</div>
+        <div class="stat-label">Protocols</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">0ms</div>
+        <div class="stat-label">Downtime on reload</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">&lt;2s</div>
+        <div class="stat-label">Edge boot time</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="terminal-title">adaptier-protocol-service · svc-b01</span>
+        <span class="terminal-status">LIVE</span>
+      </div>
+      <div class="terminal-body">
+        <div class="stream-lines">
+          <div class="line"><span class="ts">10:42:03.112</span><span class="path">b01.ahu1.supplyTemp</span><span class="val">22.7</span><span class="unit">°C</span></div>
+          <div class="line"><span class="ts">10:42:03.114</span><span class="path">b01.ahu1.returnTemp</span><span class="val">18.3</span><span class="unit">°C</span></div>
+          <div class="line"><span class="ts">10:42:03.201</span><span class="path">b01.pump1.status</span><span class="val ok">true</span></div>
+          <div class="line"><span class="ts">10:42:03.445</span><span class="path">b01.meter1.energy</span><span class="val">4823.1</span><span class="unit">kWh</span></div>
+          <div class="line"><span class="ts">10:42:04.001</span><span class="path">b01.ahu2.fanSpeed</span><span class="val">67</span><span class="unit">%</span></div>
+          <div class="line"><span class="ts">10:42:04.112</span><span class="path">b01.chiller.setpoint</span><span class="val">6.0</span><span class="unit">°C</span></div>
+          <div class="line"><span class="ts">10:42:04.318</span><span class="path">b01.ahu1.damperPos</span><span class="val">42</span><span class="unit">%</span></div>
+          <div class="line"><span class="ts">10:42:04.501</span><span class="path">b01.meter2.flow</span><span class="val">12.4</span><span class="unit">m³/h</span></div>
+          <div class="line"><span class="ts">10:42:05.003</span><span class="path">b01.vav3.position</span><span class="val">85</span><span class="unit">%</span></div>
+          <div class="line"><span class="ts">10:42:05.112</span><span class="path">b01.boiler.pressure</span><span class="val">1.8</span><span class="unit">bar</span></div>
+          <div class="line"><span class="ts">10:42:05.200</span><span class="path">b01.plc.rSetpoint</span><span class="val">21.0</span><span class="unit">°C</span></div>
+          <div class="line"><span class="ts">10:42:05.412</span><span class="path">b01.pump2.status</span><span class="val err">false</span></div>
+          <div class="line"><span class="ts">10:42:06.001</span><span class="path">b01.ahu1.supplyTemp</span><span class="val">22.8</span><span class="unit">°C</span></div>
+          <div class="line"><span class="ts">10:42:06.114</span><span class="path">b01.ahu1.returnTemp</span><span class="val">18.4</span><span class="unit">°C</span></div>
+          <div class="line"><span class="ts">10:42:06.201</span><span class="path">b01.pump1.status</span><span class="val ok">true</span></div>
+          <div class="line"><span class="ts">10:42:06.445</span><span class="path">b01.meter1.energy</span><span class="val">4823.5</span><span class="unit">kWh</span></div>
+          <div class="line"><span class="ts">10:42:06.001</span><span class="path">b01.ahu2.fanSpeed</span><span class="val">68</span><span class="unit">%</span></div>
+          <div class="line"><span class="ts">10:42:07.112</span><span class="path">b01.chiller.setpoint</span><span class="val">6.0</span><span class="unit">°C</span></div>
+          <div class="line"><span class="ts">10:42:07.318</span><span class="path">b01.ahu1.damperPos</span><span class="val">43</span><span class="unit">%</span></div>
+          <div class="line"><span class="ts">10:42:07.501</span><span class="path">b01.meter2.flow</span><span class="val">12.6</span><span class="unit">m³/h</span></div>
+          <!-- Duplicate for seamless loop -->
+          <div class="line"><span class="ts">10:42:03.112</span><span class="path">b01.ahu1.supplyTemp</span><span class="val">22.7</span><span class="unit">°C</span></div>
+          <div class="line"><span class="ts">10:42:03.114</span><span class="path">b01.ahu1.returnTemp</span><span class="val">18.3</span><span class="unit">°C</span></div>
+          <div class="line"><span class="ts">10:42:03.201</span><span class="path">b01.pump1.status</span><span class="val ok">true</span></div>
+          <div class="line"><span class="ts">10:42:03.445</span><span class="path">b01.meter1.energy</span><span class="val">4823.1</span><span class="unit">kWh</span></div>
+          <div class="line"><span class="ts">10:42:04.001</span><span class="path">b01.ahu2.fanSpeed</span><span class="val">67</span><span class="unit">%</span></div>
+          <div class="line"><span class="ts">10:42:04.112</span><span class="path">b01.chiller.setpoint</span><span class="val">6.0</span><span class="unit">°C</span></div>
+          <div class="line"><span class="ts">10:42:04.318</span><span class="path">b01.ahu1.damperPos</span><span class="val">42</span><span class="unit">%</span></div>
+          <div class="line"><span class="ts">10:42:04.501</span><span class="path">b01.meter2.flow</span><span class="val">12.4</span><span class="unit">m³/h</span></div>
+          <div class="line"><span class="ts">10:42:05.003</span><span class="path">b01.vav3.position</span><span class="val">85</span><span class="unit">%</span></div>
+          <div class="line"><span class="ts">10:42:05.112</span><span class="path">b01.boiler.pressure</span><span class="val">1.8</span><span class="unit">bar</span></div>
+        </div>
+        <div class="fade-bottom"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="protocols-section">
+  <div class="protocols-label">Supported Protocols &amp; Transports</div>
+  <div style="overflow:hidden;mask:linear-gradient(90deg,transparent,black 10%,black 90%,transparent)">
+    <div class="marquee-track">
+      <div class="proto-chip"><span class="indicator"></span> Modbus TCP</div>
+      <div class="proto-chip"><span class="indicator"></span> M-bus TCP</div>
+      <div class="proto-chip"><span class="indicator"></span> OPC-UA</div>
+      <div class="proto-chip"><span class="indicator"></span> BACnet/IP</div>
+      <div class="proto-chip"><span class="indicator"></span> HTTP REST</div>
+      <div class="proto-chip"><span class="indicator"></span> NATS JetStream</div>
+      <div class="proto-chip"><span class="indicator"></span> MQTT</div>
+      <div class="proto-chip"><span class="indicator"></span> SparkPlug B</div>
+      <div class="proto-chip"><span class="indicator"></span> Modbus TCP</div>
+      <div class="proto-chip"><span class="indicator"></span> M-bus TCP</div>
+      <div class="proto-chip"><span class="indicator"></span> OPC-UA</div>
+      <div class="proto-chip"><span class="indicator"></span> BACnet/IP</div>
+      <div class="proto-chip"><span class="indicator"></span> HTTP REST</div>
+      <div class="proto-chip"><span class="indicator"></span> NATS JetStream</div>
+      <div class="proto-chip"><span class="indicator"></span> MQTT</div>
+      <div class="proto-chip"><span class="indicator"></span> SparkPlug B</div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="section-label">// Core Platform</div>
+  <h2 class="section-title">Everything you need.<br>Nothing you don't.</h2>
+  <p class="section-sub">Designed for building automation engineers who need reliable, real-time protocol bridging without vendor lock-in.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Hot-Reload. Zero Downtime.</h3>
+      <p>Change protocol configs, register maps, or PLC logic in the browser. The running service reloads in place — no restart, no data gap.</p>
+      <span class="feature-tag">KV-watch atomic swap</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🖥</div>
+      <h3>Browser PLC IDE</h3>
+      <p>Full IEC 61131-3 programming environment — FBD, Ladder, SFC, and Structured Text — with live online debugging and force variables.</p>
+      <span class="feature-tag">IEC 61131-3 Edition 3</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📡</div>
+      <h3>Edge-to-Cloud via NATS</h3>
+      <p>Every poll reading streams to NATS JetStream. Deploy the 850 KB runtime to a Raspberry Pi and it boots in under 2 seconds.</p>
+      <span class="feature-tag">ARM64 + x86_64</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>Bidirectional Control</h3>
+      <p>Write to actuators via Modbus FC5/FC6/FC15/FC16. Rate-limited, batched, or cyclic — with drop or queue strategies.</p>
+      <span class="feature-tag">Reads + Writes</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔐</div>
+      <h3>Sandboxed Script Engine</h3>
+      <p>Custom JavaScript transforms run in isolated worker threads with zero Node.js imports and a configurable 500ms timeout per invocation.</p>
+      <span class="feature-tag">node:worker_threads</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏢</div>
+      <h3>Multi-Tenant by Design</h3>
+      <p>SERVICE_UID scopes all NATS subjects and KV keys. One API serves unlimited field sites simultaneously with full isolation.</p>
+      <span class="feature-tag">Per-UID namespace</span>
+    </div>
+  </div>
+</section>
+
+<section class="arch-section">
+  <div class="arch-inner">
+    <div class="section-label">// System Architecture</div>
+    <h2 class="section-title">From sensor to logic,<br>in one platform.</h2>
+    <p class="section-sub">AdapTier connects your field layer to your application layer through a NATS backbone — no custom glue code required.</p>
+    <div class="arch-diagram">
+      <div class="arch-flow">
+        <div class="arch-node">
+          <div class="node-icon">🏭</div>
+          <div class="node-label">Field</div>
+          <div class="node-name">Devices</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-line"></div>
+          <div class="arch-proto">Modbus<br>M-bus<br>OPC-UA<br>BACnet</div>
+        </div>
+        <div class="arch-node">
+          <div class="node-icon">⚙️</div>
+          <div class="node-label">Protocol</div>
+          <div class="node-name">Adaptors</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-line"></div>
+          <div class="arch-proto">NATS KV<br>Hot-reload</div>
+        </div>
+        <div class="arch-node" style="border-color:rgba(245,166,35,0.4)">
+          <div class="node-icon">🔀</div>
+          <div class="node-label">Broker</div>
+          <div class="node-name">NATS JS</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-line"></div>
+          <div class="arch-proto">IEC 61131-3<br>I/O Mapping</div>
+        </div>
+        <div class="arch-node">
+          <div class="node-icon">💻</div>
+          <div class="node-label">Logic</div>
+          <div class="node-name">PLC Runtime</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-line"></div>
+          <div class="arch-proto">WebSocket<br>JetStream</div>
+        </div>
+        <div class="arch-node">
+          <div class="node-icon">📊</div>
+          <div class="node-label">Output</div>
+          <div class="node-name">HMI / SCADA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">// Deployment</div>
+  <h2 class="section-title">Up in three steps.</h2>
+  <p class="section-sub">From bare metal to live data in minutes, not days.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Configure in the UI</h3>
+      <p>Add your Modbus/M-bus/OPC-UA devices in the browser. Scan the bus to auto-discover meters. Map registers to named data points. Save — config goes live instantly via NATS KV.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Deploy to the edge</h3>
+      <p>Run <code style="font-family:var(--mono);color:var(--accent);font-size:0.8rem">adaptier-agent deploy app.zip --node pi-01</code>. The 850 KB runtime boots in under 2 seconds on a Raspberry Pi. Rollback in one command.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Data flows to NATS</h3>
+      <p>Every poll reading publishes to NATS JetStream in real time. Connect dashboards, historians, PLC logic, or your own consumers — all via standard NATS subjects.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="cta-content">
+    <div class="section-label" style="justify-content:center;display:flex">// Get started today</div>
+    <h2>Your field devices deserve<br>better than custom scripts.</h2>
+    <p>AdapTier gives building automation teams a production-ready platform that grows with your deployment.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn-primary">Start Free Trial</a>
+      <a href="#" class="btn-secondary">Read the Docs →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">// AdapTier · Industrial Automation Platform</span>
+  <div class="footer-links">
+    <a href="#">Docs</a>
+    <a href="#">GitHub</a>
+    <a href="#">Protocol Support</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
