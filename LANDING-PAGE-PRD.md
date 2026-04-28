@@ -89,9 +89,9 @@ These are more authentic and credible than any mocked UI. Place them as:
 - The FBD screenshot (larger, behind) with the Configurator (in front, offset)
 - Or a single focused screenshot with a live-debug data stream visible
 
-Screenshot file paths (sourced from user):
-- `/mnt/c/Users/NiclasKäld/OneDrive - Styrfabriken AB/Bilder/Skärmbilder/adaptier-landing-page-2026-04-20_1.png` (PLC FBD editor)
-- `/mnt/c/Users/NiclasKäld/OneDrive - Styrfabriken AB/Bilder/Skärmbilder/adaptier-landing-page-2026-04-20_2.png` (Configurator + live debug)
+Screenshot file paths:
+- `images/screenshot-plc.png` (PLC FBD editor)
+- `images/screenshot-configurator.png` (Configurator + live debug)
 
 ---
 
@@ -377,8 +377,8 @@ Nav (sticky)
 
 | Asset | Source | Notes |
 |-------|--------|-------|
-| PLC FBD editor screenshot | `/mnt/c/Users/NiclasKäld/.../_1.png` | Use as-is, hero visual |
-| Configurator + live debug screenshot | `/mnt/c/Users/NiclasKäld/.../_2.png` | Use as-is, hero + debug section |
+| PLC FBD editor screenshot | `images/screenshot-plc.png` | Use as-is, hero visual |
+| Configurator + live debug screenshot | `images/screenshot-configurator.png` | Use as-is, hero + debug section |
 | AdapTier logo (SVG) | From product repo or create inline | Check `adaptier-configurator-ui/` for existing logo |
 | Protocol icons | Not required — use styled text chips | Avoid random icon sets |
 
