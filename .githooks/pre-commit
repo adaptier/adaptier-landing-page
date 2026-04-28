@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Block commits that would leak a personal identity into this public repo.
+set -euo pipefail
+
+EXPECTED_EMAIL="1378945+sf-nika@users.noreply.github.com"
+EXPECTED_NAME="sf-nika"
+
+actual_email="$(git config user.email)"
+actual_name="$(git config user.name)"
+
+if [ "$actual_email" != "$EXPECTED_EMAIL" ] || [ "$actual_name" != "$EXPECTED_NAME" ]; then
+  echo "pre-commit: blocked — git identity is '$actual_name <$actual_email>'." >&2
+  echo "pre-commit: this repo requires '$EXPECTED_NAME <$EXPECTED_EMAIL>'." >&2
+  echo "pre-commit: fix with:" >&2
+  echo "  git config user.name  '$EXPECTED_NAME'" >&2
+  echo "  git config user.email '$EXPECTED_EMAIL'" >&2
+  exit 1
+fi

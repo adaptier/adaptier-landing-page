@@ -6,6 +6,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A static marketing landing page for the AdapTier industrial automation platform. No build step, no framework — pure HTML + CSS + vanilla JS served directly from the browser.
 
+## Public Repo — Identity Policy
+
+This is a public GitHub repo. **All commits must use the GitHub privacy identity:**
+
+- Name: `sf-nika`
+- Email: `1378945+sf-nika@users.noreply.github.com`
+
+Never commit with a personal name or real email. The local `.git/config` is preset, and a `.githooks/pre-commit` hook blocks mismatched identities. If a fresh clone misses the hook, run:
+
+```bash
+git config core.hooksPath .githooks
+git config user.name  "sf-nika"
+git config user.email "1378945+sf-nika@users.noreply.github.com"
+```
+
+Also avoid putting personal names, emails, or absolute Windows/OneDrive paths into any tracked file (PRDs, comments, screenshot metadata).
+
 ## Development
 
 Open any `.html` file directly in a browser, or serve locally:
