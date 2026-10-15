@@ -409,3 +409,45 @@ section[id] { scroll-margin-top: 72px; }
   .trust > div { border-right: none; border-bottom: 1px solid var(--border); }
   .shot-inset { width: 100%; margin-top: 16px; }
 }
+
+/* ---------- diagrams ---------- */
+.diagram text { font-family: var(--mono); font-size: 12px; fill: var(--text); text-anchor: middle; }
+.diagram .d-label text { font-size: 10px; letter-spacing: 0.14em; fill: var(--text-faint); text-anchor: start; }
+.diagram .d-sub { font-size: 10px; fill: var(--text-muted); }
+.d-dev rect { fill: var(--surface); stroke: var(--border-strong); }
+.d-node rect { fill: var(--surface-raised); stroke: rgba(78, 201, 176, 0.45); }
+.d-hub rect { fill: var(--surface-raised); stroke: rgba(245, 166, 35, 0.55); }
+.d-central rect { fill: var(--surface); stroke: var(--border-strong); }
+.d-building { fill: rgba(255, 255, 255, 0.015); stroke: var(--border); stroke-dasharray: 4 4; }
+.d-link { stroke: var(--text-faint); stroke-width: 1.5; }
+.d-pulse { fill: var(--teal); }
+.d-wan-pulse { fill: var(--accent); }
+.d-offline { fill: var(--red); opacity: 0; transition: opacity 200ms ease; }
+.d-wan, .d-wan-label { transition: opacity 200ms ease; }
+#distributed-diagram[data-wan="down"] .d-wan { opacity: 0.15; }
+#distributed-diagram[data-wan="down"] .d-wan-label { opacity: 0; }
+#distributed-diagram[data-wan="down"] .d-wan-pulse { visibility: hidden; animation: none; }
+#distributed-diagram[data-wan="down"] .d-offline { opacity: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .d-pulse { animation: 2.4s linear infinite; }
+  .p-h50 { animation-name: pulse-h50; } .p-h30 { animation-name: pulse-h30; }
+  .p-v80 { animation-name: pulse-v80; } .p-v100 { animation-name: pulse-v100; }
+  .d2 { animation-delay: -0.6s; } .d3 { animation-delay: -1.2s; } .d4 { animation-delay: -1.8s; }
+}
+@keyframes pulse-h50 { from { transform: translateX(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { transform: translateX(50px); opacity: 0; } }
+@keyframes pulse-h30 { from { transform: translateX(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { transform: translateX(30px); opacity: 0; } }
+@keyframes pulse-v80 { from { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { transform: translateY(-80px); opacity: 0; } }
+@keyframes pulse-v100 { from { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { transform: translateY(-100px); opacity: 0; } }
+
+/* diagrams on small screens: legible hero, scrollable distributed view */
+@media (max-width: 640px) {
+  #hero-diagram text { font-size: 14px; }
+  #hero-diagram .d-label text { font-size: 12px; }
+  #hero-diagram .d-sub { display: none; }
+  #distributed-diagram text { font-size: 14px; }
+  #distributed-diagram .d-label text { font-size: 12px; }
+  #distributed-diagram .d-sub { font-size: 11.5px; }
+  #distributed-diagram { min-width: 760px; }
+  .diagram:has(#distributed-diagram) { overflow-x: auto; }
+}

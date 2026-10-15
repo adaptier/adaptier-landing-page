@@ -50,10 +50,36 @@
     <div class="diagram">
       <svg id="hero-diagram" viewBox="0 0 560 360" role="img" aria-labelledby="hero-diagram-title">
         <title id="hero-diagram-title">Field devices connect to edge nodes, which join a site hub and report to central</title>
+        <g class="d-label"><text x="20" y="28">FIELD DEVICES</text><text x="190" y="28">EDGE NODES</text><text x="350" y="28">SITE HUB</text><text x="470" y="28">CENTRAL</text></g>
+        <!-- devices -->
+        <g class="d-dev"><rect x="20" y="60" width="120" height="40" rx="6"/><text x="80" y="85">Heat meter</text></g>
+        <g class="d-dev"><rect x="20" y="130" width="120" height="40" rx="6"/><text x="80" y="155">Air handler</text></g>
+        <g class="d-dev"><rect x="20" y="200" width="120" height="40" rx="6"/><text x="80" y="225">BACnet device</text></g>
+        <g class="d-dev"><rect x="20" y="270" width="120" height="40" rx="6"/><text x="80" y="295">Energy meter</text></g>
+        <!-- links devices → edges (horizontal) -->
+        <line class="d-link" x1="140" y1="80" x2="190" y2="80"/><line class="d-link" x1="140" y1="150" x2="190" y2="150"/>
+        <line class="d-link" x1="140" y1="220" x2="190" y2="220"/><line class="d-link" x1="140" y1="290" x2="190" y2="290"/>
+        <!-- edges -->
+        <g class="d-node"><rect x="190" y="60" width="110" height="110" rx="8"/><text x="245" y="105">Edge</text><text class="d-sub" x="245" y="125">control · screens</text><text class="d-sub" x="245" y="141">alarms</text></g>
+        <g class="d-node"><rect x="190" y="200" width="110" height="110" rx="8"/><text x="245" y="245">Edge</text><text class="d-sub" x="245" y="265">control · screens</text><text class="d-sub" x="245" y="281">alarms</text></g>
+        <!-- edges → hub -->
+        <line class="d-link" x1="300" y1="115" x2="350" y2="115"/><line class="d-link" x1="300" y1="255" x2="350" y2="255"/>
+        <g class="d-hub"><rect x="350" y="100" width="90" height="170" rx="8"/><text x="395" y="180">Site</text><text x="395" y="198">hub</text></g>
+        <!-- hub → central (the WAN link) -->
+        <line class="d-link d-wan" x1="440" y1="185" x2="470" y2="185"/>
+        <g class="d-central"><rect x="470" y="130" width="76" height="110" rx="8"/><text x="508" y="190">Central</text></g>
+        <!-- pulses: each starts at its link's x1/y1 and translates along it -->
+        <circle class="d-pulse p-h50"  cx="140" cy="80"  r="3"/>
+        <circle class="d-pulse p-h50 d2" cx="140" cy="220" r="3"/>
+        <circle class="d-pulse p-h50 d3" cx="300" cy="115" r="3"/>
+        <circle class="d-pulse p-h50 d4" cx="300" cy="255" r="3"/>
+        <circle class="d-pulse p-h30 d-wan-pulse" cx="440" cy="185" r="3"/>
       </svg>
     </div>
   </div>
 </header>
+
+<main>
 
 <div class="protocols" aria-label="Supported field protocols">
   <div class="container">
@@ -153,6 +179,37 @@
     <div class="diagram" style="margin-top:40px">
       <svg id="distributed-diagram" data-wan="up" viewBox="0 0 1100 420" role="img" aria-labelledby="dist-title">
         <title id="dist-title">Two buildings, each with edge nodes and a site hub, connected to central over the internet</title>
+        <g class="d-label"><text x="40" y="34">BUILDING A</text><text x="620" y="34">BUILDING B</text><text x="430" y="34">CENTRAL</text></g>
+        <!-- central, top centre -->
+        <g class="d-central"><rect x="430" y="50" width="240" height="80" rx="10"/><text x="550" y="86">Central</text><text class="d-sub" x="550" y="108">latest values · events · alarms</text></g>
+        <!-- building A -->
+        <rect class="d-building" x="30" y="170" width="420" height="230" rx="12"/>
+        <g class="d-hub"><rect x="190" y="190" width="100" height="60" rx="8"/><text x="240" y="226">Site hub</text></g>
+        <g class="d-node"><rect x="60" y="300" width="110" height="70" rx="8"/><text x="115" y="332">Edge</text><text class="d-sub" x="115" y="352">local control</text></g>
+        <g class="d-node"><rect x="310" y="300" width="110" height="70" rx="8"/><text x="365" y="332">Edge</text><text class="d-sub" x="365" y="352">local control</text></g>
+        <line class="d-link" x1="115" y1="300" x2="115" y2="220"/><line class="d-link" x1="115" y1="220" x2="190" y2="220"/>
+        <line class="d-link" x1="365" y1="300" x2="365" y2="220"/><line class="d-link" x1="365" y1="220" x2="290" y2="220"/>
+        <!-- building B -->
+        <rect class="d-building" x="650" y="170" width="420" height="230" rx="12"/>
+        <g class="d-hub"><rect x="810" y="190" width="100" height="60" rx="8"/><text x="860" y="226">Site hub</text></g>
+        <g class="d-node"><rect x="680" y="300" width="110" height="70" rx="8"/><text x="735" y="332">Edge</text><text class="d-sub" x="735" y="352">local control</text></g>
+        <g class="d-node"><rect x="930" y="300" width="110" height="70" rx="8"/><text x="985" y="332">Edge</text><text class="d-sub" x="985" y="352">local control</text></g>
+        <line class="d-link" x1="735" y1="300" x2="735" y2="220"/><line class="d-link" x1="735" y1="220" x2="810" y2="220"/>
+        <line class="d-link" x1="985" y1="300" x2="985" y2="220"/><line class="d-link" x1="985" y1="220" x2="910" y2="220"/>
+        <!-- WAN links hub → central (vertical) -->
+        <line class="d-link d-wan" x1="240" y1="190" x2="240" y2="90"/><line class="d-link d-wan" x1="240" y1="90" x2="430" y2="90"/>
+        <line class="d-link d-wan" x1="860" y1="190" x2="860" y2="90"/><line class="d-link d-wan" x1="860" y1="90" x2="670" y2="90"/>
+        <text class="d-wan-label" x="550" y="160">internet</text>
+        <text class="d-offline" x="550" y="160">internet down — every building keeps running</text>
+        <!-- local pulses (always run): edge → hub, vertical segment -->
+        <circle class="d-pulse p-v80" cx="115" cy="300" r="3"/>
+        <circle class="d-pulse p-v80 d2" cx="365" cy="300" r="3"/>
+        <circle class="d-pulse p-v80 d3" cx="735" cy="300" r="3"/>
+        <circle class="d-pulse p-v80 d4" cx="985" cy="300" r="3"/>
+        <!-- WAN pulses: hub → up, vertical segment -->
+        <circle class="d-pulse p-v100 d-wan-pulse" cx="240" cy="190" r="3"/>
+        <circle class="d-pulse p-v100 d-wan-pulse d2" cx="860" cy="190" r="3"/>
+    
       </svg>
     </div>
     <button id="wan-toggle" class="btn btn-ghost" aria-pressed="false" style="margin-top:20px">Cut the internet</button>
@@ -186,6 +243,7 @@
     <div class="cta-row"><a class="btn btn-primary" data-demo hidden>Book a demo</a></div>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="container">
