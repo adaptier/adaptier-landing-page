@@ -23,8 +23,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      # Publish only the live page. Concept pages and the design docs stay in the
+      # repo for reference but must not be served from adaptier.io.
+      - name: Stage site
+        run: |
+          mkdir -p _site/images
+          cp index.html app.jsx hmi.jsx stream.jsx tweaks-panel.jsx favicon.svg CNAME .nojekyll _site/
+          cp images/*.png _site/images/
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
