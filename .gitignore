@@ -2,3 +2,4 @@
 Thumbs.db
 *.swp
 *.swo
+tools/verify/node_modules/

@@ -1,0 +1,12 @@
+{
+  "name": "adaptier-landing-verify",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test static.test.mjs browser.test.mjs",
+    "test:static": "node --test static.test.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.48.0"
+  }
+}

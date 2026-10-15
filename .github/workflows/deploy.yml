@@ -28,8 +28,8 @@ jobs:
       - name: Stage site
         run: |
           mkdir -p _site/images
-          cp index.html app.jsx hmi.jsx stream.jsx tweaks-panel.jsx favicon.svg CNAME .nojekyll _site/
-          cp images/*.png _site/images/
+          cp index.html styles.css main.js favicon.svg CNAME .nojekyll _site/
+          cp images/*.webp images/og.png _site/images/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

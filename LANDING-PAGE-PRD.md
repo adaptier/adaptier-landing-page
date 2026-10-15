@@ -8,6 +8,7 @@
 > the "certified" runtime, 850 KB / <2 s figures, HTTP REST / MQTT / SparkPlug B, Ladder/SFC
 > execution, configurator forcing, the free trial / pricing CTAs, and the HMI energy-KPI and
 > schedule panels. Treat the copy below as historical; `index.html` + `*.jsx` are the truth.
+> Superseded by the five-pillar redesign — adaptier-umbrella `docs/superpowers/specs/2026-10-15-landing-page-redesign-design.md`.
 
 ---
 

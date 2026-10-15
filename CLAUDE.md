@@ -4,7 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-A static marketing landing page for the AdapTier industrial automation platform. No build step, no framework — pure HTML + CSS + vanilla JS served directly from the browser.
+The adaptier.io landing page: one static page (`index.html` + `styles.css` + `main.js`), no build
+step, no framework. Five pillars for a BMS buyer — integration engine, PLC, operator screens, fleet &
+updates, distributed BMS. Design + decisions: adaptier-umbrella
+`docs/superpowers/specs/2026-10-15-landing-page-redesign-design.md`.
 
 ## Public Repo — Identity Policy
 
@@ -23,77 +26,42 @@ git config user.email "1378945+sf-nika@users.noreply.github.com"
 
 Also avoid putting personal names, emails, or absolute Windows/OneDrive paths into any tracked file (PRDs, comments, screenshot metadata).
 
+## Claims rule
+
+Every factual sentence must map to a **verified** row in that spec's §5 claims table (the claim ID is
+in an HTML comment next to the sentence). New fact → new row, verified against the code first. A
+claim that cannot be verified is not published. `tools/verify` enforces the mechanical parts
+(banned words, unmapped numbers, NATS named once in the footnote).
+
 ## Development
 
-Open any `.html` file directly in a browser, or serve locally:
+    python3 -m http.server 8080                 # view
+    cd tools/verify && npm install && npm test  # static + Playwright checks (system chromium)
 
-```bash
-# Python (no install needed)
-python3 -m http.server 8080
+## Demo link
 
-# Node.js
-npx serve .
-```
+`DEMO_URL` in `main.js`. Empty = every `[data-demo]` element stays hidden. Set a `mailto:` or
+https URL to show all "Book a demo" buttons.
 
-There are no tests, no lint commands, and no package.json — this is intentional per the PRD.
+## Screenshots
 
-## File Structure
+`images/<name>.webp` + `@2x`, produced by `python3 tools/webp.py <png> <name> <width>` from captures
+against demo data only (HMI demo mode, bms-simulator, scratch PLC runtime, throwaway fleet stack —
+never a live edge or a production control plane). No customer names, tags, IPs or MACs in any image.
 
-| File | Purpose |
-|------|---------|
-| `index.html` | Main landing page (production candidate) — all CSS and JS are inline |
-| `landing-concept-a/b/c.html` | Earlier design explorations, kept for reference |
-| `images/screenshot-plc.png` | Product screenshot: FBD editor — used as hero visual |
-| `images/screenshot-configurator.png` | Product screenshot: Configurator + live debug — used as hero visual |
-| `favicon.svg` | Inline SVG favicon |
-| `LANDING-PAGE-PRD.md` | Full design spec: color tokens, typography, section content, layout rules |
-| `adaptier-feature-map.md` | Authoritative source for all product capabilities, copy, and technical claims |
+## Deployment
 
-## Architecture
+Every push to `main` deploys via `.github/workflows/deploy.yml`, which publishes only `index.html`,
+`styles.css`, `main.js`, `favicon.svg`, `CNAME`, `.nojekyll`, `images/*.webp` and `images/og.png`.
+A new file the page needs must be added to that `cp` list **and** to `SERVED` in `tools/verify/serve.mjs`.
 
-`index.html` is fully self-contained: CSS custom properties, all component styles, and the live-debug animation JS are all inline. No external dependencies except Google Fonts (JetBrains Mono + Inter).
+## Design system
 
-### Design System (defined in `index.html` `:root`)
+Tokens in `styles.css :root` mirror the product UI (amber `--accent` = primary action, teal = values,
+pink = REAL, green = online). Fonts: JetBrains Mono + Inter only. Animate only `transform`/`opacity`;
+everything stops under `prefers-reduced-motion`. Breakpoints 1280 / 960 / 640.
 
-The design language mirrors the AdapTier product UI exactly. Key tokens:
+## Kept for reference (not served)
 
-- `--bg: #1a1e24` / `--surface: #21262d` / `--surface-raised: #282e38` — dark charcoal hierarchy
-- `--accent: #f5a623` — amber, used for primary CTA (matches "Go Online" button in product)
-- `--teal: #4ec9b0` — data values, BOOL wire color
-- `--pink: #e879a0` — REAL type indicators
-- `--green: #3fb950` — online/connected status dots
-- `--mono: 'JetBrains Mono'` / `--sans: 'Inter'` — typography pair
-
-**Do not** substitute generic rounded sans-serifs (Poppins, Nunito, Syne, etc.).
-
-### Key UI Patterns
-
-- **Status dots**: 6–8px circles with matching `box-shadow` glow (e.g. `0 0 8px #3fb950`)
-- **Type pills**: Rounded badges with colored text, dark background — colors match wire colors (teal = BOOL, pink = REAL)
-- **Section labels**: Uppercase monospace, `--text-faint`, `letter-spacing: 0.14em`
-- **Protocol chips**: Dark background, subtle border, green status dot, monospace font
-- **Live debug rows**: `timestamp · path (muted) · value (teal, right-aligned)` — CSS `@keyframes` animation, no layout-triggering properties
-
-### Content Sources
-
-All product claims, numbers, and copy must come from `adaptier-feature-map.md` or `LANDING-PAGE-PRD.md`. Do not invent or approximate technical specs (bundle sizes, boot times, function code numbers, etc.).
-
-Both docs are April 2026 snapshots: in October 2026 the page carried claims that were false (a "certified" runtime, 850 KB / <2 s, HTTP/MQTT/SparkPlug, Ladder/SFC execution, a free trial). Verify a claim against the platform code before publishing it, not just against these docs.
-
-### Deployment
-
-`.github/workflows/deploy.yml` publishes every push to `main` to adaptier.io, but stages **only** `index.html`, the `*.jsx` files, `favicon.svg`, `CNAME`, `.nojekyll` and `images/*.png`. Concept pages and `.md` docs are not served. A new file the page needs must be added to that `cp` list.
-
-## Responsiveness
-
-Breakpoints: `1280px+` (desktop) · `960px` (tablet) · `640px` (mobile)
-
-- Hero: 2-col on desktop → 1-col on mobile (screenshots stack below text)
-- Feature cards: 3-col → 2-col → 1-col
-- Protocol marquee: always visible, speed slows on mobile
-
-## Performance Rules
-
-- Animate only with `transform` and `opacity` — never layout-triggering properties
-- Product screenshots use `loading="lazy"` except the hero image
-- Preload hero fonts via `<link rel="preload">`
+`landing-concept-*.html`, `LANDING-PAGE-PRD.md`, `adaptier-feature-map.md` — April 2026 material;
+do not take copy from them.
