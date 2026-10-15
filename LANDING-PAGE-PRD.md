@@ -2,7 +2,12 @@
 
 **Version:** 1.0  
 **Date:** 2026-04-20  
-**Status:** Ready for implementation
+**Status:** Implemented 2026-04-28 — partly out of date
+
+> **October 2026:** several claims in this PRD turned out false and were removed from the page:
+> the "certified" runtime, 850 KB / <2 s figures, HTTP REST / MQTT / SparkPlug B, Ladder/SFC
+> execution, configurator forcing, the free trial / pricing CTAs, and the HMI energy-KPI and
+> schedule panels. Treat the copy below as historical; `index.html` + `*.jsx` are the truth.
 
 ---
 

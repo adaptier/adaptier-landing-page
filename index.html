@@ -827,7 +827,7 @@
 
   .hmi-thumbs {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
   .hmi-thumb {
@@ -864,9 +864,6 @@
   .zc-t { font-size: 16px; font-weight: 600; }
   .zc-sp { font-size: 9px; color: var(--text-muted); }
 
-  @media (max-width: 1100px) {
-    .hmi-thumbs { grid-template-columns: repeat(2, 1fr); }
-  }
   @media (max-width: 720px) {
     .hmi { padding: 64px 0; }
     .hmi-thumbs { grid-template-columns: 1fr; }

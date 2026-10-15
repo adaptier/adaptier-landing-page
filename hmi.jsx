@@ -219,75 +219,6 @@ function BuildingThumb() {
   );
 }
 
-// ---------- ENERGY KPI THUMB ----------
-function EnergyThumb() {
-  const bars = [42, 58, 71, 65, 80, 92, 78, 64, 55, 70, 88, 95, 82, 70];
-  const max = Math.max(...bars);
-  return (
-    <div className="thumb-body" style={{ padding: 14 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 12 }}>
-        <div>
-          <div style={{ fontFamily: 'JetBrains Mono', fontSize: 9, color: '#4a5568', letterSpacing: '0.14em', textTransform: 'uppercase' }}>kWh · Today</div>
-          <div style={{ fontFamily: 'JetBrains Mono', fontSize: 18, color: '#cdd6e0', fontWeight: 600 }}>1,284<span style={{ color: '#4a5568', fontSize: 11, marginLeft: 4 }}>kWh</span></div>
-        </div>
-        <div style={{ textAlign: 'right' }}>
-          <div style={{ fontFamily: 'JetBrains Mono', fontSize: 10, color: '#3fb950', fontWeight: 600 }}>↓ 8.4%</div>
-          <div style={{ fontFamily: 'JetBrains Mono', fontSize: 9, color: '#4a5568' }}>vs avg</div>
-        </div>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 60 }}>
-        {bars.map((v, i) => (
-          <div key={i} style={{
-            flex: 1,
-            height: `${(v/max)*100}%`,
-            background: i === bars.length - 2 ? '#f5a623' : 'rgba(78,201,176,0.5)',
-            borderRadius: '1px 1px 0 0',
-          }}/>
-        ))}
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontFamily: 'JetBrains Mono', fontSize: 9, color: '#4a5568' }}>
-        <span>00:00</span><span>12:00</span><span>now</span>
-      </div>
-    </div>
-  );
-}
-
-// ---------- SCHEDULES THUMB ----------
-function SchedulesThumb() {
-  const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-  // 24 hour blocks per day; 1 = occupied, 0 = unoccupied, 2 = setback
-  const grid = [
-    [0,0,0,0,0,0,2,1,1,1,1,1,1,1,1,1,1,1,2,0,0,0,0,0],
-    [0,0,0,0,0,0,2,1,1,1,1,1,1,1,1,1,1,1,2,0,0,0,0,0],
-    [0,0,0,0,0,0,2,1,1,1,1,1,1,1,1,1,1,1,2,0,0,0,0,0],
-    [0,0,0,0,0,0,2,1,1,1,1,1,1,1,1,1,1,1,2,0,0,0,0,0],
-    [0,0,0,0,0,0,2,1,1,1,1,1,1,1,1,1,1,2,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  ];
-  const colors = ['#1d2127', '#4ec9b0', '#f5a623'];
-  return (
-    <div className="thumb-body" style={{ padding: 14 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '36px 1fr', rowGap: 4, columnGap: 6 }}>
-        {days.map((d, i) => (
-          <React.Fragment key={d}>
-            <div style={{ fontFamily: 'JetBrains Mono', fontSize: 10, color: '#8892a4', alignSelf: 'center' }}>{d}</div>
-            <div style={{ display: 'flex', gap: 1 }}>
-              {grid[i].map((v, j) => (
-                <div key={j} style={{ flex: 1, height: 10, background: colors[v], borderRadius: 1, opacity: v === 0 ? 0.5 : 1 }}/>
-              ))}
-            </div>
-          </React.Fragment>
-        ))}
-      </div>
-      <div style={{ marginTop: 12, display: 'flex', gap: 12, fontFamily: 'JetBrains Mono', fontSize: 9, color: '#8892a4' }}>
-        <span><span style={{ display: 'inline-block', width: 8, height: 8, background: '#4ec9b0', marginRight: 4, borderRadius: 1 }}/>Occupied</span>
-        <span><span style={{ display: 'inline-block', width: 8, height: 8, background: '#f5a623', marginRight: 4, borderRadius: 1 }}/>Setback</span>
-      </div>
-    </div>
-  );
-}
-
 // ---------- ALARMS THUMB ----------
 function AlarmsThumb() {
   const [pulse, setPulse] = useState(0);
@@ -345,7 +276,7 @@ function HMISection() {
   ];
 
   return (
-    <section className="hmi" data-screen-label="HMI">
+    <section className="hmi" id="hmi" data-screen-label="HMI">
       <div className="container">
         <div className="hmi-head">
           <span className="label">
@@ -354,7 +285,7 @@ function HMISection() {
           </span>
           <h2>The control room, <span className="teal">in the browser.</span></h2>
           <p>
-            Process schematics, dashboards, schedules, alarms, and historian — all driven by the same NATS streams the PLC publishes to. Operators see live values; engineers tweak setpoints; supervisors get alerts. One UI, one source of truth.
+            Process schematics, dashboards, alarms, and historian — all driven by the same NATS streams the PLC publishes to. Operators see live values, adjust setpoints, and acknowledge alarms. One UI, one source of truth.
           </p>
         </div>
 
@@ -396,20 +327,6 @@ function HMISection() {
               <span className="right"><span className="pill muted">6/8</span></span>
             </div>
             <BuildingThumb />
-          </div>
-          <div className="hmi-thumb panel-card">
-            <div className="panel-chrome thumb-chrome">
-              <span className="title">energy · KPI</span>
-              <span className="right"><span className="pill muted">24h</span></span>
-            </div>
-            <EnergyThumb />
-          </div>
-          <div className="hmi-thumb panel-card">
-            <div className="panel-chrome thumb-chrome">
-              <span className="title">schedules · plant</span>
-              <span className="right"><span className="pill muted">7d</span></span>
-            </div>
-            <SchedulesThumb />
           </div>
           <div className="hmi-thumb panel-card">
             <div className="panel-chrome thumb-chrome">

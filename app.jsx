@@ -23,7 +23,6 @@ function Logo({ size = 15 }) {
     <a href="#" className="logo" style={{ fontSize: size }}>
       <span className="status-dot"></span>
       ADAPTIER
-      <span className="ver">v0.42.1</span>
     </a>
   );
 }
@@ -34,14 +33,11 @@ function Nav() {
       <div className="container">
         <Logo />
         <div className="nav-links">
-          <a href="#">Product</a>
-          <a href="#">Protocols</a>
-          <a href="#">PLC</a>
-          <a href="#">Deploy</a>
-          <a href="#">Docs</a>
-          <a href="#">Pricing</a>
+          <a href="#protocols">Protocols</a>
+          <a href="#live-debug">Live debug</a>
+          <a href="#plc">PLC</a>
+          <a href="#hmi">HMI</a>
         </div>
-        <a href="#" className="btn btn-primary nav-cta">Get Started</a>
       </div>
     </nav>
   );
@@ -56,7 +52,7 @@ function Hero({ headlineStyle, showStream }) {
           <div>
             <div className="hero-eyebrow">
               <span className="status-dot"></span>
-              IEC 61131-3 CERTIFIED RUNTIME
+              IEC 61131-3 PLC RUNTIME
             </div>
             <h1 className="hero-title" style={isMixed ? { fontFamily: "'Inter', sans-serif", fontWeight: 600, letterSpacing: '-0.03em' } : null}>
               From field device <span className="arrow">→</span><br/>
@@ -64,24 +60,20 @@ function Hero({ headlineStyle, showStream }) {
               <span className="dim">in minutes.</span>
             </h1>
             <p className="hero-sub">
-              AdapTier bridges <strong>Modbus TCP</strong>, <strong>M-bus</strong>, <strong>OPC-UA</strong>, <strong>BACnet</strong>, and <strong>HTTP</strong> to NATS JetStream. Browser-based IEC 61131-3 PLC IDE, hot-reload config, and edge deployment — built in.
+              AdapTier bridges <strong>Modbus TCP</strong>, <strong>M-Bus</strong>, <strong>BACnet/IP</strong>, and <strong>OPC-UA</strong> to NATS JetStream. Browser-based IEC 61131-3 PLC IDE, hot-reload config, and edge deployment — built in.
             </p>
             <div className="hero-cta">
-              <a href="#" className="btn btn-primary">Get Started Free</a>
-              <a href="#" className="btn btn-text">View Docs →</a>
+              <a href="#plc" className="btn btn-primary">Explore the PLC IDE</a>
+              <a href="#hmi" className="btn btn-text">See the HMI →</a>
             </div>
             <div className="hero-meta">
               <div className="hero-meta-item">
-                <div className="v">850 <span className="unit">KB</span></div>
-                <div className="k">Runtime size</div>
+                <div className="v">4 <span className="unit">protocols</span></div>
+                <div className="k">Field buses</div>
               </div>
               <div className="hero-meta-item">
-                <div className="v">&lt;2 <span className="unit">s</span></div>
-                <div className="k">Cold boot · Pi</div>
-              </div>
-              <div className="hero-meta-item">
-                <div className="v">5 <span className="unit">protocols</span></div>
-                <div className="k">In production</div>
+                <div className="v">206 <span className="unit">functions</span></div>
+                <div className="k">IEC standard library</div>
               </div>
             </div>
           </div>
@@ -127,19 +119,16 @@ function Hero({ headlineStyle, showStream }) {
 
 const PROTOCOLS = [
   { name: 'Modbus TCP', status: 'green' },
-  { name: 'M-bus TCP', status: 'green' },
-  { name: 'OPC-UA', status: 'green' },
+  { name: 'M-Bus TCP', status: 'green' },
   { name: 'BACnet/IP', status: 'green' },
-  { name: 'HTTP REST', status: 'green' },
+  { name: 'OPC-UA', status: 'green' },
   { name: 'NATS JetStream', status: 'green' },
-  { name: 'MQTT', status: 'amber' },
-  { name: 'SparkPlug B', status: 'amber' },
 ];
 
 function ProtocolBelt() {
   const items = [...PROTOCOLS, ...PROTOCOLS]; // duplicate for seamless loop
   return (
-    <section className="belt" data-screen-label="Protocols">
+    <section className="belt" id="protocols" data-screen-label="Protocols">
       <div className="container">
         <div className="belt-label">
           <span className="label">
@@ -164,7 +153,7 @@ function ProtocolBelt() {
 
 function LiveDebugShowcase() {
   return (
-    <section className="showcase" data-screen-label="Live Debug">
+    <section className="showcase" id="live-debug" data-screen-label="Live Debug">
       <div className="container">
         <div className="showcase-grid">
           <div className="showcase-text">
@@ -187,7 +176,7 @@ function LiveDebugShowcase() {
               </li>
               <li>
                 <span className="num">03</span>
-                <span className="desc"><strong>Force values during debug.</strong> Override any data point at runtime to test downstream logic without touching the device.</span>
+                <span className="desc"><strong>Write from the panel.</strong> Send a value to any writable data point, checked against its limits at the source.</span>
               </li>
               <li>
                 <span className="num">04</span>
@@ -208,8 +197,7 @@ function LiveDebugShowcase() {
               <div className="debug-tab">Devices</div>
               <div className="debug-tab">Poll Groups</div>
               <div className="debug-tab active">Live Debug</div>
-              <div className="debug-tab">Forces</div>
-            </div>
+                          </div>
             <div className="debug-body">
               <div className="debug-tree">
                 <div className="tree-section">Poll Groups</div>
@@ -234,7 +222,7 @@ function LiveDebugShowcase() {
 
 function PLCSpotlight() {
   return (
-    <section className="plc" data-screen-label="PLC IDE">
+    <section className="plc" id="plc" data-screen-label="PLC IDE">
       <div className="container">
         <div className="plc-head">
           <span className="label">
@@ -243,7 +231,7 @@ function PLCSpotlight() {
           </span>
           <h2>A PLC IDE that lives in <span className="pink">the browser.</span></h2>
           <p>
-            Full IEC 61131-3 programming — Function Block Diagram, Ladder, SFC, and Structured Text — with live online debugging, force variables, version snapshots, and NATS I/O mapping. No installation. Deploy over NATS.
+            IEC 61131-3 programming in Function Block Diagram and Structured Text — with live online debugging, force variables, version snapshots, and NATS I/O mapping. No installation. Deploy over NATS.
           </p>
         </div>
 
@@ -259,8 +247,6 @@ function PLCSpotlight() {
             </div>
             <div className="lang-tabs">
               <div className="lang-tab active">FBD</div>
-              <div className="lang-tab">Ladder</div>
-              <div className="lang-tab">SFC</div>
               <div className="lang-tab">Structured Text</div>
               <div className="lang-tab" style={{ marginLeft: 'auto', borderRight: 'none', color: 'var(--text-muted)' }}>● Force vars (3)</div>
             </div>
@@ -288,8 +274,8 @@ function PLCSpotlight() {
         <div className="plc-features">
           <div className="plc-feature">
             <span className="pf-label">Languages</span>
-            <span className="pf-value">FBD · LD · SFC · ST</span>
-            <span className="pf-desc">All four IEC 61131-3 graphical and textual languages, mixable in one program.</span>
+            <span className="pf-value">FBD · ST</span>
+            <span className="pf-desc">Function Block Diagram and Structured Text, mixable in one program.</span>
           </div>
           <div className="plc-feature">
             <span className="pf-label">Standard Function Blocks</span>
@@ -298,8 +284,8 @@ function PLCSpotlight() {
           </div>
           <div className="plc-feature">
             <span className="pf-label">Standard Functions</span>
-            <span className="pf-value">~<span className="accent">120</span> functions</span>
-            <span className="pf-desc">Plus 70+ type conversions across REAL, INT, BOOL, STRING.</span>
+            <span className="pf-value"><span className="accent">206</span> functions</span>
+            <span className="pf-desc">58 standard functions plus 148 type conversions across REAL, INT, BOOL, STRING.</span>
           </div>
           <div className="plc-feature">
             <span className="pf-label">Scheduler</span>
@@ -326,15 +312,11 @@ function FinalCTA() {
   return (
     <section className="final-cta" data-screen-label="Final CTA">
       <div className="container">
-        <span className="label" style={{ marginBottom: 24, justifyContent: 'center' }}>
-          <span className="dot"></span>
-          Free trial · No credit card
-        </span>
         <h2>Your field devices deserve better than custom scripts.</h2>
         <p>A production-ready platform that grows with your deployment — from one Pi in a basement to a fleet of edge nodes across a portfolio.</p>
         <div className="cta-row">
-          <a href="#" className="btn btn-primary">Get Started Free</a>
-          <a href="#" className="btn btn-ghost">Book a Demo</a>
+          <a href="#plc" className="btn btn-primary">Explore the PLC IDE</a>
+          <a href="#hmi" className="btn btn-ghost">See the HMI</a>
         </div>
       </div>
     </section>
@@ -350,11 +332,9 @@ function Footer() {
           <span className="foot-tag">· Industrial automation platform</span>
         </div>
         <div className="foot-links">
-          <a href="#">Docs</a>
-          <a href="#">GitHub</a>
-          <a href="#">Protocols</a>
-          <a href="#">Pricing</a>
-          <a href="#">Contact</a>
+          <a href="#protocols">Protocols</a>
+          <a href="#plc">PLC</a>
+          <a href="#hmi">HMI</a>
         </div>
         <div className="foot-copy">© 2026 ADAPTIER</div>
       </div>

@@ -78,6 +78,12 @@ The design language mirrors the AdapTier product UI exactly. Key tokens:
 
 All product claims, numbers, and copy must come from `adaptier-feature-map.md` or `LANDING-PAGE-PRD.md`. Do not invent or approximate technical specs (bundle sizes, boot times, function code numbers, etc.).
 
+Both docs are April 2026 snapshots: in October 2026 the page carried claims that were false (a "certified" runtime, 850 KB / <2 s, HTTP/MQTT/SparkPlug, Ladder/SFC execution, a free trial). Verify a claim against the platform code before publishing it, not just against these docs.
+
+### Deployment
+
+`.github/workflows/deploy.yml` publishes every push to `main` to adaptier.io, but stages **only** `index.html`, the `*.jsx` files, `favicon.svg`, `CNAME`, `.nojekyll` and `images/*.png`. Concept pages and `.md` docs are not served. A new file the page needs must be added to that `cp` list.
+
 ## Responsiveness
 
 Breakpoints: `1280px+` (desktop) · `960px` (tablet) · `640px` (mobile)

@@ -1,12 +1,16 @@
 # Adaptier Feature Map
 
 > Research output from all sub-repos. Used as content source for the landing page.
+>
+> **Snapshot from 2026-04-20 — out of date.** Claims found false in October 2026 have been
+> corrected below; capabilities added since April are not yet listed. Verify any claim
+> against the code before using it on the page.
 
 ---
 
 ## What Adaptier Is
 
-**AdapTier** is an industrial building automation platform that bridges field protocols (Modbus TCP, M-bus TCP, OPC-UA, BACnet/IP, HTTP) to message brokers (MQTT, NATS JetStream). It consists of independently deployable services coordinated through NATS.
+**AdapTier** is an industrial building automation platform that bridges field protocols (Modbus TCP, M-Bus TCP, BACnet/IP, OPC-UA) to NATS JetStream. It consists of independently deployable services coordinated through NATS.
 
 **Core value prop:** Zero-downtime, dynamically configurable protocol adaptor runtime with a real-time web UI — configure, monitor, and control field devices without restarting services.
 
@@ -47,7 +51,8 @@
 ### Architecture Ready For
 - OPC-UA (main service plugin slot)
 - BACnet (main service plugin slot)
-- SparkPlug B
+
+> MQTT, SparkPlug B and HTTP REST exist only in the prototype suite; the main platform is NATS-only.
 
 ---
 
@@ -378,7 +383,7 @@ index.services.<serviceUid>                          → { knownAdaptorIds: stri
 ## Key Differentiators (Landing Page Angles)
 
 1. **Hot-reload, zero restarts** — Change any config in the UI; the running adaptor reloads in place
-2. **Multi-protocol from day one** — Modbus, M-bus, OPC-UA, BACnet, HTTP — one platform
+2. **Multi-protocol** — Modbus TCP, M-Bus, BACnet/IP, OPC-UA — one platform
 3. **Bidirectional** — Reads AND writes; control actuators, not just monitor sensors
 4. **Script transforms** — Custom JS in a sandboxed worker; handle any proprietary register layout
 5. **Real-time UI** — Live poll data, connection status LEDs, debug stream — no polling the UI
@@ -389,7 +394,7 @@ index.services.<serviceUid>                          → { knownAdaptorIds: stri
 10. **Security-first scripts** — Worker thread sandbox with zero imports, fresh per invocation, timeout-killed
 11. **Browser-based IEC 61131-3 IDE** — Full PLC programming without installed software
 12. **Live online debugging** — Force variables, toggle tasks, inspect every pin in real time
-13. **Edge-first deployment** — 850 KB runtime bundle, <2s boot, runs on Raspberry Pi
+13. **Edge-first deployment** — self-contained runtime bundle, runs on Raspberry Pi
 14. **One-command rollback** — Instantly revert any edge app to its previous version
 
 ---
@@ -409,11 +414,11 @@ A browser-based IEC 61131-3 PLC programming environment paired with a lightweigh
 | Language | Type | Status |
 |----------|------|--------|
 | **Function Block Diagram (FBD)** | Visual, graphical signal flow | Production |
-| **Ladder Diagram (LD)** | Visual, SVG rung editor | Production |
-| **Sequential Function Chart (SFC)** | Visual, state machine canvas | Production |
+| **Ladder Diagram (LD)** | Visual, SVG rung editor | Editor only — the runtime refuses LD at deploy |
+| **Sequential Function Chart (SFC)** | Visual, state machine canvas | Editor only — the runtime refuses SFC at deploy |
 | **Structured Text (ST)** | Text, full IEC syntax | Production |
 
-All languages compile to a canonical ST/IR form for unified runtime execution. "View ST" button shows compiled output for any language.
+Only FBD and ST execute on the runtime (`adaptier-plc-runtime/src/unsupported-language.test.ts`). "View ST" button shows compiled output for any language.
 
 #### Data Types (IEC 61131-3)
 **Primitives:** `BOOL`, `BYTE`, `WORD`, `DWORD`, `INT`, `UINT`, `DINT`, `UDINT`, `REAL`, `LREAL`, `TIME`, `STRING`
@@ -432,12 +437,12 @@ All languages compile to a canonical ST/IR form for unified runtime execution. "
 `SR`, `RS` — Set/Reset latches (R-dominant and S-dominant)
 `R_TRIG`, `F_TRIG` — Rising/falling edge triggers
 
-#### Standard Functions (~120)
+#### Standard Functions (206: 58 functions + 148 type conversions)
 - Arithmetic: `ADD`, `SUB`, `MUL`, `DIV`, `MOD`
 - Logic: `AND`, `OR`, `XOR`, `NOT`
 - Comparison: `GT`, `GE`, `EQ`, `NE`, `LE`, `LT`
 - Selection: `SEL` (mux), `MAX`, `MIN`, `ABS`, `MOVE`
-- Type conversions: 70+ functions covering all IEC §2.5.1.5 combinations
+- Type conversions: 148 functions covering all IEC §2.5.1.5 combinations
 
 #### Custom Function Blocks
 - User-defined FBs authored in FBD or ST
@@ -595,8 +600,7 @@ scanNumber++
 | `adaptier.plc.logs.{nodeId}` | outbound | Structured log stream |
 
 #### Deployment & Performance
-- **Bundle size:** ~850 KB compressed (esbuild, self-contained, no npm install on device)
-- **Boot time:** <2 seconds to ready
+- **Bundle:** self-contained (esbuild, no npm install on device); size and boot time not measured — do not quote
 - **Memory:** 50–200 MB resident
 - **Execution latency:** Sub-millisecond for typical programs (100+ FBs)
 - **Multi-arch Docker images:** `linux/amd64` + `linux/arm64`
