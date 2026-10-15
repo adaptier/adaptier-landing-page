@@ -49,7 +49,7 @@ for (const url of ['mailto:demo@example.com', 'https://example.com/book']) {
   test(`demo url set (${url.split(':')[0]}) shows every demo button with that href`, async () => {
     const { page, ctx } = await open({ viewport: { width: 1440, height: 900 } }, { demoUrl: url });
     const els = await page.$$eval('[data-demo]', es => es.map(e => ({
-      shown: !e.hidden, href: e.tagName === 'A' ? e.getAttribute('href') : null })));
+      shown: e.checkVisibility(), href: e.tagName === 'A' ? e.getAttribute('href') : null })));
     assert.ok(els.length >= 3);
     for (const e of els) { assert.ok(e.shown); if (e.href !== null) assert.equal(e.href, url); }
     await ctx.close();
@@ -62,7 +62,7 @@ test('no-JS: content and diagrams visible, demo hidden', async () => {
     '#hero-diagram', '#distributed-diagram']) {
     assert.ok(await page.isVisible(sel), sel);
   }
-  assert.equal(await page.$$eval('[data-demo]', es => es.filter(e => !e.hidden).length), 0);
+  assert.equal(await page.$$eval('[data-demo]', es => es.filter(e => e.checkVisibility()).length), 0);
   await ctx.close();
 });
 
