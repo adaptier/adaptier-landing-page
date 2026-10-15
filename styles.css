@@ -392,7 +392,7 @@ section[id] { scroll-margin-top: 72px; }
 @media (max-width: 960px) {
   .hero-grid, .pillar { grid-template-columns: 1fr; gap: 40px; }
   .pillar.flip .pillar-text { order: 0; }
-  .shot-inset { position: static; width: 70%; margin: -24px 0 0 auto; }
+  .shot-inset { position: static; width: 70%; max-width: 420px; margin: -24px 0 0 auto; }
   .trust { grid-template-columns: repeat(2, 1fr); }
   .trust > div:nth-child(2) { border-right: none; }
   .trust > div:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
