@@ -19,7 +19,11 @@ function initWanToggle() {
   // Centre the sideways-scrolling wrapper (instant, no motion); no-op when nothing overflows.
   const centre = () => { if (wrap) wrap.scrollLeft = (wrap.scrollWidth - wrap.clientWidth) / 2; };
   centre();
-  window.addEventListener('resize', centre);
+  // Re-centre only when the width changes: a mobile URL bar showing/hiding fires resize too.
+  let lastWidth = window.innerWidth;
+  window.addEventListener('resize', () => {
+    if (window.innerWidth !== lastWidth) { lastWidth = window.innerWidth; centre(); }
+  });
   btn.addEventListener('click', () => {
     const down = diagram.dataset.wan !== 'down';
     diagram.dataset.wan = down ? 'down' : 'up';

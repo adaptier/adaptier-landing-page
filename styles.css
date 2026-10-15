@@ -108,7 +108,6 @@
   }
   .pill.pink { background: rgba(232, 121, 160, 0.08); color: var(--pink); border-color: rgba(232, 121, 160, 0.2); }
   .pill.amber { background: var(--accent-dim); color: var(--accent); border-color: rgba(245, 166, 35, 0.25); }
-  .pill.muted { background: rgba(255,255,255,0.04); color: var(--text-muted); border-color: var(--border); }
 
   /* ------- Buttons ------- */
   .btn {
@@ -233,14 +232,6 @@
     color: var(--text-strong);
   }
   h1.hero-title .accent { color: var(--accent); }
-  h1.hero-title .dim { color: var(--text-muted); }
-  h1.hero-title .arrow {
-    display: inline-block;
-    font-family: var(--mono);
-    color: var(--text-muted);
-    font-weight: 400;
-    margin: 0 0.15em;
-  }
   .hero-sub {
     font-size: 17px;
     line-height: 1.55;
@@ -254,15 +245,6 @@
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-  }
-  .panel-card {
-    background: var(--surface);
-    border: 1px solid var(--border-strong);
-    border-radius: 8px;
-    box-shadow:
-      0 30px 60px -20px rgba(0,0,0,0.6),
-      0 12px 24px -8px rgba(0,0,0,0.4);
-    overflow: hidden;
   }
   .panel-chrome {
     height: 32px;
