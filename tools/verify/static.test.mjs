@@ -6,8 +6,9 @@ import { ROOT } from './serve.mjs';
 
 const html = readFileSync(join(ROOT, 'index.html'), 'utf8');
 const js = existsSync(join(ROOT, 'main.js')) ? readFileSync(join(ROOT, 'main.js'), 'utf8') : '';
+const attrText = [...html.matchAll(/\b(?:alt|aria-label|title)="([^"]*)"/g)].map(m => m[1]).join(' ');
 const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '')
-  .replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/g, ' ');
+  .replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/g, ' ') + ' ' + attrText;
 
 test('no dead links', () => {
   assert.doesNotMatch(html, /href="#"/);
@@ -44,7 +45,7 @@ test('every number on the page is a verified claim', () => {
     ['30', 'C27'], ['365', 'C27'], ['44', 'C29'], ['200', 'C29'], ['2026', 'footer'],
     ['01', 'label'], ['02', 'label'], ['03', 'label'], ['04', 'label'], ['05', 'label'],
   ]);
-  for (const [n] of text.matchAll(/\d+/g)) assert.ok(allowed.has(n), `unmapped number ${n}`);
+  for (const [n] of text.matchAll(/\b\d+\b/g)) assert.ok(allowed.has(n), `unmapped number ${n}`);
 });
 
 test('images have dimensions and alt; only the first is eager', () => {

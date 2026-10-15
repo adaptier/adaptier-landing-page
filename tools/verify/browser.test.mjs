@@ -6,7 +6,7 @@ import { startServer } from './serve.mjs';
 let server, browser;
 before(async () => {
   server = await startServer();
-  browser = await chromium.launch({ executablePath: '/usr/bin/chromium-browser' });
+  browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH ?? '/usr/bin/chromium-browser' });
 });
 after(async () => { await browser?.close(); server?.close(); });
 
@@ -20,6 +20,7 @@ async function open(opts = {}, { demoUrl } = {}) {
     await page.route('**/main.js', async route => {
       const res = await route.fetch();
       const body = (await res.text()).replace('const DEMO_URL = "";', `const DEMO_URL = ${JSON.stringify(demoUrl)};`);
+      if (!body.includes(JSON.stringify(demoUrl))) throw new Error('DEMO_URL rewrite did not apply — main.js line changed?');
       await route.fulfill({ response: res, body });
     });
   }
@@ -39,7 +40,7 @@ for (const width of [1440, 960, 390, 320]) {
 
 test('demo buttons stay hidden while DEMO_URL is empty', async () => {
   const { page, ctx } = await open({ viewport: { width: 1440, height: 900 } });
-  const visible = await page.$$eval('[data-demo]', els => els.filter(e => e.offsetParent !== null).length);
+  const visible = await page.$$eval('[data-demo]', els => els.filter(e => e.checkVisibility()).length);
   assert.equal(visible, 0);
   await ctx.close();
 });
@@ -73,7 +74,7 @@ test('reduced motion: nothing animates', async () => {
 
 test('motion allowed: the diagrams animate', async () => {
   const { page, ctx } = await open({ viewport: { width: 1440, height: 900 } });
-  assert.ok(await page.evaluate(() => document.getAnimations().length) > 0);
+  assert.ok(await page.evaluate(() => document.getAnimations().filter(a => a.effect?.target?.closest?.('#hero-diagram, #distributed-diagram')).length) > 0);
   await ctx.close();
 });
 
