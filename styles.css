@@ -397,6 +397,7 @@ section[id] { scroll-margin-top: 72px; }
 /* ---------- diagrams ---------- */
 .diagram text { font-family: var(--mono); font-size: 12px; fill: var(--text); text-anchor: middle; }
 .diagram .d-label text { font-size: 10px; letter-spacing: 0.14em; fill: var(--text-muted); text-anchor: start; }
+.diagram .d-label text.mid { text-anchor: middle; }
 .diagram .d-sub { font-size: 10px; fill: var(--text-muted); }
 .d-dev rect { fill: var(--surface); stroke: var(--border-strong); }
 .d-node rect { fill: var(--surface-raised); stroke: rgba(78, 201, 176, 0.45); }
