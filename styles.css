@@ -422,8 +422,8 @@ section[id] { scroll-margin-top: 72px; }
 .d-link { stroke: var(--text-faint); stroke-width: 1.5; }
 .d-pulse { fill: var(--teal); }
 .d-wan-pulse { fill: var(--accent); }
-.d-offline { fill: var(--red); opacity: 0; transition: opacity 200ms ease; }
-.d-wan, .d-wan-label { transition: opacity 200ms ease; }
+.diagram .d-offline { fill: var(--red); opacity: 0; }
+#distributed-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 #distributed-diagram[data-wan="down"] .d-wan { opacity: 0.15; }
 #distributed-diagram[data-wan="down"] .d-wan-label { opacity: 0; }
 #distributed-diagram[data-wan="down"] .d-wan-pulse { visibility: hidden; animation: none; }
@@ -433,6 +433,7 @@ section[id] { scroll-margin-top: 72px; }
   .d-pulse { animation: 2.4s linear infinite; }
   .p-h50 { animation-name: pulse-h50; } .p-h30 { animation-name: pulse-h30; }
   .p-v80 { animation-name: pulse-v80; } .p-v100 { animation-name: pulse-v100; }
+  .d-wan, .d-wan-label, .d-offline { transition: opacity 200ms ease; }
   .d2 { animation-delay: -0.6s; } .d3 { animation-delay: -1.2s; } .d4 { animation-delay: -1.8s; }
 }
 @keyframes pulse-h50 { from { transform: translateX(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { transform: translateX(50px); opacity: 0; } }

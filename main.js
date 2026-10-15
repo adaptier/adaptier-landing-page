@@ -15,11 +15,17 @@ function initWanToggle() {
   const btn = document.getElementById('wan-toggle');
   const diagram = document.getElementById('distributed-diagram');
   if (!btn || !diagram) return;
+  const wrap = document.getElementById('distributed-scroll');
+  // Centre the sideways-scrolling wrapper (instant, no motion); no-op when nothing overflows.
+  const centre = () => { if (wrap) wrap.scrollLeft = (wrap.scrollWidth - wrap.clientWidth) / 2; };
+  centre();
+  window.addEventListener('resize', centre);
   btn.addEventListener('click', () => {
     const down = diagram.dataset.wan !== 'down';
     diagram.dataset.wan = down ? 'down' : 'up';
     btn.setAttribute('aria-pressed', String(down));
     btn.textContent = down ? 'Restore internet' : 'Cut the internet';
+    centre();
   });
 }
 
