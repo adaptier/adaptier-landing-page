@@ -1,12 +1,15 @@
-// Demo / contact destination for every "Book a demo" button: a mailto: or https URL.
-// While empty, the buttons stay hidden (they ship with the `hidden` attribute).
-const DEMO_URL = "";
+// Destination of every "Book a demo" button. /demo forwards to the Microsoft Bookings page
+// (demo/index.html holds that URL). While empty, the buttons stay hidden (they ship `hidden`).
+const DEMO_URL = "/demo";
 
 function applyDemo(url) {
   if (!url) return;
   for (const el of document.querySelectorAll('[data-demo]')) {
     el.hidden = false;
-    if (el.tagName === 'A') el.href = url;
+    if (el.tagName !== 'A') continue;
+    el.href = url;
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
   }
 }
 

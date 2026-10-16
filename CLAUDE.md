@@ -40,8 +40,13 @@ claim that cannot be verified is not published. `tools/verify` enforces the mech
 
 ## Demo link
 
-`DEMO_URL` in `main.js`. Empty = every `[data-demo]` element stays hidden. Set a `mailto:` or
-https URL to show all "Book a demo" buttons.
+Every "Book a demo" button (`[data-demo]`) links to `/demo` in a new tab (`DEMO_URL` in `main.js`;
+empty = the buttons stay hidden, the way to take them down). `demo/index.html` forwards to the
+Microsoft Bookings page: GitHub Pages cannot send a 302, so it is a `location.replace` page, and the
+target is the one constant `DEMO_BOOKING_URL`, **base64-encoded** because a Bookings URL contains the
+booking mailbox. No email address may appear in any served file — `tools/verify` fails on one. To
+change the target: `printf %s '<url>' | base64 -w0` into that constant. The hero microcopy
+("30 min · Fridays · via Microsoft Teams", claim C32) must follow the Bookings service settings.
 
 ## Screenshots
 

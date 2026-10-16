@@ -19,7 +19,7 @@ async function open(opts = {}, { demoUrl } = {}) {
   if (demoUrl !== undefined) {
     await page.route('**/main.js', async route => {
       const res = await route.fetch();
-      const body = (await res.text()).replace('const DEMO_URL = "";', `const DEMO_URL = ${JSON.stringify(demoUrl)};`);
+      const body = (await res.text()).replace(/^const DEMO_URL = ".*";$/m, `const DEMO_URL = ${JSON.stringify(demoUrl)};`);
       if (!body.includes(JSON.stringify(demoUrl))) throw new Error('DEMO_URL rewrite did not apply — main.js line changed?');
       await route.fulfill({ response: res, body });
     });
@@ -39,9 +39,42 @@ for (const width of [1440, 960, 390, 320]) {
 }
 
 test('demo buttons stay hidden while DEMO_URL is empty', async () => {
-  const { page, ctx } = await open({ viewport: { width: 1440, height: 900 } });
+  const { page, ctx } = await open({ viewport: { width: 1440, height: 900 } }, { demoUrl: '' });
   const visible = await page.$$eval('[data-demo]', els => els.filter(e => e.checkVisibility()).length);
   assert.equal(visible, 0);
+  await ctx.close();
+});
+
+test('shipped: every demo link opens /demo in a new tab, the hero button above the fold', async () => {
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+    const { page, ctx } = await open({ viewport });
+    const links = await page.$$eval('a[data-demo]', es => es.map(e => ({
+      href: e.getAttribute('href'), target: e.target, rel: e.rel, shown: e.checkVisibility() })));
+    assert.ok(links.length >= 3);
+    for (const l of links) {
+      assert.deepEqual({ href: l.href, target: l.target, rel: l.rel },
+        { href: '/demo', target: '_blank', rel: 'noopener noreferrer' });
+    }
+    const hero = await page.$eval('.hero-cta a[data-demo]', e => {
+      const r = e.getBoundingClientRect(); return { bottom: r.bottom, shown: e.checkVisibility() };
+    });
+    assert.ok(hero.shown && hero.bottom <= viewport.height, `hero button below the fold at ${viewport.width}px`);
+    assert.ok(await page.isVisible('.cta-note'));
+    await ctx.close();
+  }
+});
+
+test('/demo forwards to the booking page', async () => {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  let booked = null;
+  await ctx.route('https://outlook.office.com/**', route => {
+    booked = route.request().url();
+    return route.fulfill({ status: 200, contentType: 'text/html', body: 'booking' });
+  });
+  await page.goto(new URL('demo', server.url).href);
+  await page.waitForURL(/outlook\.office\.com\/book\//);
+  assert.match(booked, /^https:\/\/outlook\.office\.com\/book\//);
   await ctx.close();
 });
 
