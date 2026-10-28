@@ -4,9 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AdapTier — Open building automation platform</title>
-<meta name="description" content="AdapTier connects Modbus, M-Bus, BACnet and OPC-UA equipment, runs IEC 61131-3 control logic programmed in the browser, gives operators live process screens, and manages every site and update centrally — each building keeps running offline." />
+<meta name="description" content="AdapTier manages control logic, operator screens and software updates centrally and runs them locally in every building, which keeps running when the internet is down. Every action from central is recorded before it is sent." />
 <meta property="og:title" content="AdapTier — Open building automation platform" />
-<meta property="og:description" content="Integration, PLC, HMI, fleet management and distributed operation — one platform for every building." />
+<meta property="og:description" content="Building automation you run like software: managed centrally, run locally, every action recorded." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://adaptier.io/" />
 <meta property="og:image" content="https://adaptier.io/images/og.png" />
@@ -40,8 +40,8 @@
     <div>
       <div class="hero-eyebrow"><span class="status-dot"></span>OPEN BUILDING AUTOMATION PLATFORM</div>
       <h1 class="hero-title">Connect, program and run <span class="accent">every building</span> — from one platform.</h1>
-      <!-- C1, C7, C14, C19 -->
-      <p class="hero-sub">Bring Modbus, M-Bus, BACnet and OPC-UA equipment together, program control logic in the browser, give operators live screens, and manage every site from one place.</p>
+      <!-- C13, C18, C20, C24 -->
+      <p class="hero-sub">Control logic, operator screens and software updates are managed centrally and run locally in every building — which keeps running when the internet is down.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" data-demo hidden>Book a demo</a>
         <a href="#integration" class="btn btn-text">See how it works ↓</a>
@@ -95,15 +95,12 @@
   <div class="container pillar">
     <div class="pillar-text">
       <span class="label"><span class="dot"></span>01 · Integration engine</span>
-      <h2>Every field bus. <span class="teal">One data model.</span></h2>
-      <!-- C4, C6 -->
-      <p class="lead">AdapTier's integration engine polls and subscribes to your equipment and turns every point into a named, typed value with a quality flag — ready for control, screens and history. Configure it in the browser; changes apply live, without a restart.</p>
+      <h2>Define a point once. <span class="teal">Use it everywhere.</span></h2>
+      <!-- C5, C6, C33 -->
+      <p class="lead">Each device point gets one name, with its limits and state texts, and control logic, screens, history and central all use that same point. There is no separate tag database per tool. Configure it in the browser; changes apply live, without a restart.</p>
       <ul class="facts">
-        <li>Modbus TCP, M-Bus, BACnet/IP and OPC-UA</li>                                          <!-- C1 -->
-        <li>Device discovery: M-Bus bus scan, BACnet and OPC-UA browse</li>                       <!-- C2 -->
-        <li>BACnet COV subscriptions, devices behind routers, and a weekly and exception schedule editor</li> <!-- C3, C6b -->
-        <li>Every value carries a quality flag — good or bad, with the reason</li>                         <!-- C4 -->
-        <li>Writes are checked against each point's limits and state texts before they reach the device</li> <!-- C5 -->
+        <li>Writes are checked against the point's limits and state texts where they reach the device — whichever screen or central user sends them</li> <!-- C5 -->
+        <li>Configure every edge from central; two people editing the same configuration cannot overwrite each other</li> <!-- C34 -->
         <li>Sandboxed scripts decode proprietary formats</li>                                     <!-- C6 -->
       </ul>
     </div>
@@ -111,9 +108,6 @@
       <div class="shot">
         <div class="panel-chrome"><span class="dots"><i></i><i></i><i></i></span><span class="title">configurator · live values</span></div>
         <img src="images/configurator.webp" srcset="images/configurator.webp 1x, images/configurator@2x.webp 2x" width="640" height="282" alt="Configurator with a device tree and a live table of polled values" />
-      </div>
-      <div class="shot shot-inset">
-        <img src="images/bacnet-schedule.webp" srcset="images/bacnet-schedule.webp 1x, images/bacnet-schedule@2x.webp 2x" width="300" height="131" alt="BACnet weekly schedule editor" loading="lazy" />
       </div>
     </div>
   </div>
@@ -123,17 +117,13 @@
   <div class="container pillar flip">
     <div class="pillar-text">
       <span class="label"><span class="dot"></span>02 · PLC in the browser</span>
-      <h2>IEC 61131-3. <span class="pink">No install.</span></h2>
-      <!-- C7, C8, C13 -->
-      <p class="lead">Write control logic in Function Block Diagram or Structured Text, deploy it to the edge from the browser, and debug it online with live values on the wires.</p>
+      <h2>No install. <span class="pink">No laptop on site.</span></h2>
+      <!-- C7, C8, C13, C35 -->
+      <p class="lead">Write IEC 61131-3 control logic in the browser, deploy it to any edge through central, and debug it online. You don't need an engineering workstation or a VPN into each plant.</p>
       <ul class="facts">
-        <li>Function Block Diagram and Structured Text</li>                                        <!-- C7 -->
-        <li>Online debugging with live values and forcing</li>                                     <!-- C8 -->
-        <li>RETAIN variables are saved to disk periodically and restored after a restart or redeploy</li>                                 <!-- C9 -->
-        <li>Multiple tasks at independent cycle times</li>                                         <!-- C10 -->
-        <li>206 standard functions and type conversions</li>                   <!-- C11 -->
-        <li>Version history with diffs, Codesys import and PLCopen XML export</li>                 <!-- C12 -->
-        <li>A built-in Modbus TCP server exposes PLC variables to existing systems</li>            <!-- C13 -->
+        <li>Program, deploy and debug on your own login, with separate rights to view, debug and deploy</li> <!-- C35 -->
+        <li>Every deploy is kept as a snapshot you can diff against and restore</li>              <!-- C12 -->
+        <li>Bring existing Codesys code; export to PLCopen XML</li>                                 <!-- C12 -->
       </ul>
     </div>
     <div class="pillar-visual">
@@ -152,24 +142,19 @@
   <div class="container pillar">
     <div class="pillar-text">
       <span class="label"><span class="dot"></span>03 · Operator screens</span>
-      <h2>Live process screens. <span class="teal">On every site.</span></h2>
-      <!-- C14, C16, C17, C18 -->
-      <p class="lead">Operators get process schematics in any browser — live values on open, setpoints and commands at a click, alarms and history one step away. Each customer's screens live in one central library and are published to every edge.</p>
+      <h2>One screen library. <span class="teal">Every site.</span></h2>
+      <!-- C18 -->
+      <p class="lead">Each customer's screens live in one central library, not in a project file per site. Publish a change once and every edge has it within seconds. Each edge serves its screens itself, so they keep working when the internet is down.</p>
       <ul class="facts">
-        <li>Schematics show live values the moment they open</li>                                  <!-- C14 -->
-        <li>Stale, invalid and manually overridden values are marked</li>                          <!-- C15 -->
-        <li>Setpoint and command popups enforce each point's limits</li>                           <!-- C16 -->
-        <li>History charts per point, alarms with acknowledgement, and a site map coloured by alarm state</li> <!-- C17 -->
-        <li>Publish a screen change once — it reaches every edge in about ten seconds and keeps working offline</li> <!-- C18 -->
+        <li>Drawings are checked on the way in: one carrying scripts or outside links is held back, and every edge keeps the last good version</li> <!-- C36 -->
+        <li>One central view of every site — a site that has gone offline is shown as out of date, not with its last values</li> <!-- C37 -->
+        <li>Operators change setpoints and acknowledge alarms from central when their role allows it</li> <!-- C38 -->
       </ul>
     </div>
     <div class="pillar-visual">
       <div class="shot">
         <div class="panel-chrome"><span class="dots"><i></i><i></i><i></i></span><span class="title">operator screen · live</span><span class="right"><span class="pill"><span class="status-dot"></span> LIVE</span></span></div>
         <img src="images/hmi-schematic.webp" srcset="images/hmi-schematic.webp 1x, images/hmi-schematic@2x.webp 2x" width="640" height="285" alt="Process schematic with live values" loading="lazy" />
-      </div>
-      <div class="shot shot-inset">
-        <img src="images/hmi-popup.webp" srcset="images/hmi-popup.webp 1x, images/hmi-popup@2x.webp 2x" width="300" height="229" alt="Setpoint popup rejecting a value outside the point's limits" loading="lazy" />
       </div>
     </div>
   </div>
@@ -184,10 +169,9 @@
       <p class="lead">New edge nodes announce themselves; you assign them to a customer and site, and their applications deploy. Updates roll out the same way to every site.</p>
       <ul class="facts">
         <li>Onboarding by claim — a hardware swap is a re-claim into the same slot</li>          <!-- C19 -->
-        <li>Staged rollouts: a canary first, then the rest — halting on a failing node, with rollback</li> <!-- C20 -->
+        <li>Staged rollouts: a canary first, then the rest — halting on a node that fails or keeps crashing, with rollback</li> <!-- C20 -->
         <li>Updates from the release feed are signed and verified before they can be deployed</li>                       <!-- C23, C30 -->
         <li>Downgrades are refused unless explicitly allowed</li>                                   <!-- C21 -->
-        <li>Per-node settings and live logs from the central console</li>                          <!-- C22 -->
       </ul>
     </div>
     <div class="pillar-visual">
@@ -213,7 +197,7 @@
         <title id="dist-title">Two buildings, each with edge nodes and a site hub, connected to central over the internet</title>
         <g class="d-label"><text x="46" y="192">BUILDING A</text><text x="666" y="192">BUILDING B</text><text class="mid" x="550" y="38">CENTRAL</text></g>
         <!-- central, top centre -->
-        <g class="d-central"><rect x="430" y="50" width="240" height="80" rx="10"/><text x="550" y="86">Central</text><text class="d-sub" x="550" y="108">latest values · events · alarms</text></g>
+        <g class="d-central"><rect x="430" y="50" width="240" height="80" rx="10"/><text x="550" y="86">Central</text><text class="d-sub" x="550" y="108">history · alarms · audit</text></g>
         <!-- building A -->
         <rect class="d-building" x="30" y="170" width="420" height="230" rx="12"/>
         <g class="d-hub"><rect x="190" y="190" width="100" height="60" rx="8"/><text x="240" y="226">Site hub</text></g>
@@ -246,11 +230,10 @@
     </div>
     <button id="wan-toggle" class="btn btn-ghost" aria-pressed="false" style="margin-top:20px">Cut the internet</button>
     <ul class="facts" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
-      <li>Local control, screens and alarms on every node</li>                                      <!-- C24 -->
       <li>A site hub keeps control and screens running across a site's nodes when the internet is down</li> <!-- C25 -->
       <li>If the hub fails, nodes fall back to a direct cloud link automatically</li>               <!-- C26 -->
-      <li>Central keeps the latest value of every point, and by default 30 days of events and 365 days of alarms</li> <!-- C27 -->
-      <li>Each customer's data is isolated from every other customer's</li>                         <!-- C28 -->
+      <li>Values wait on site through a link outage — a day by default — and reach central's history without gaps</li> <!-- C39 -->
+      <li>One alarm list for every site, and a site that goes quiet raises an alarm itself</li> <!-- C40 -->
       <li>After a week, a site catches central up in 44 seconds — about 200 kB — because only the latest value of each point crosses the internet</li> <!-- C29: wording as fixed in Task 1 -->
     </ul>
   </div>
@@ -261,8 +244,8 @@
     <div class="trust">
       <div><span class="t-k">Updates</span><span class="t-v">Signed releases</span><span class="t-d">Feed releases are signed and checked against a pinned key and a checksum before they can be deployed.</span></div> <!-- C30 -->
       <div><span class="t-k">Rollouts</span><span class="t-v">Downgrade protection</span><span class="t-d">Moving an application backwards is refused unless explicitly allowed.</span></div> <!-- C21 -->
-      <div><span class="t-k">Control</span><span class="t-v">Controller watchdog</span><span class="t-d">A stalled PLC raises an alarm within a minute.</span></div> <!-- C31 -->
-      <div><span class="t-k">Data</span><span class="t-v">Quality on every value</span><span class="t-d">Every value is marked good or bad, with the reason when it is bad.</span></div> <!-- C4 -->
+      <div><span class="t-k">Audit</span><span class="t-v">No write without a record</span><span class="t-d">Every setpoint, acknowledgement, configuration change and PLC deploy made from central is recorded with the person and role before it is sent. If it cannot be recorded, it is not sent.</span></div> <!-- C41 -->
+      <div><span class="t-k">Tenants</span><span class="t-v">Customer isolation</span><span class="t-d">Each customer's data lives in its own isolated account, reached through its own address and login.</span></div> <!-- C28, C42 -->
     </div>
     <p class="footnote">Under the hood: an open messaging backbone (NATS) connects every node — no proprietary middleware.</p>
   </div>
@@ -271,7 +254,7 @@
 <section class="final-cta">
   <div class="container">
     <h2>See it running on <span class="accent">your buildings.</span></h2>
-    <p>Integration, PLC, operator screens, fleet management and distributed operation — one platform, from a single plant room to a portfolio.</p>
+    <p>Building automation you run like software — from a single plant room to a portfolio.</p>
     <div class="cta-row"><a class="btn btn-primary" data-demo hidden>Book a demo</a></div>
   </div>
 </section>

@@ -30,7 +30,12 @@ Also avoid putting personal names, emails, or absolute Windows/OneDrive paths in
 
 Every factual sentence must map to a **verified** row in that spec's §5 claims table (the claim ID is
 in an HTML comment next to the sentence). New fact → new row, verified against the code first. A
-claim that cannot be verified is not published. `tools/verify` enforces the mechanical parts
+claim that cannot be verified is not published.
+
+**Differentiators only** (spec §11, 2026-10-28): state what sets AdapTier apart from a traditional
+PLC / SCADA / BMS stack. Do not list what a BMS buyer takes for granted (quality flags, alarms with
+acknowledgement, history charts, RETAIN, FBD/ST, COV, limit-checked popups, function counts) — it reads
+as a salesman listing basics. The protocol strip is the one place for "speaks your buses". `tools/verify` enforces the mechanical parts
 (banned words, unmapped numbers, NATS named once in the footnote).
 
 ## Development
