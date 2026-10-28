@@ -41,8 +41,7 @@ test('NATS is named exactly once (the footnote)', () => {
 test('every number on the page is a verified claim', () => {
   // Each entry: number → claim id in spec §5. Add a number here only with its claim.
   const allowed = new Map([
-    ['61131', 'C7'], ['3', 'C7'], ['206', 'C11'],
-    ['30', 'C27'], ['365', 'C27'], ['44', 'C29'], ['200', 'C29'], ['2026', 'footer'],
+    ['61131', 'C7'], ['3', 'C7'], ['44', 'C29'], ['200', 'C29'], ['2026', 'footer'],
     ['01', 'label'], ['02', 'label'], ['03', 'label'], ['04', 'label'], ['05', 'label'],
   ]);
   for (const [n] of text.matchAll(/\b\d+\b/g)) assert.ok(allowed.has(n), `unmapped number ${n}`);
