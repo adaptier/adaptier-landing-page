@@ -5,7 +5,7 @@ service at adaptier.io. We want to hear about security problems in either.
 
 ## How to report
 
-E-mail **security@adaptier.io**, in Swedish or English. Please include:
+E-mail **security@styrfabriken.se**, in Swedish or English. Please include:
 
 - what is affected (an edge component, the central service, a customer origin `<name>.adaptier.io`, this website);
 - how to reproduce it, and what an attacker could do with it;
