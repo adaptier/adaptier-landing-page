@@ -29,6 +29,7 @@ jobs:
         run: |
           mkdir -p _site/images
           cp index.html styles.css main.js favicon.svg CNAME .nojekyll _site/
+          mkdir -p _site/.well-known && cp .well-known/security.txt _site/.well-known/
           cp images/*.webp images/og.png _site/images/
       - uses: actions/upload-pages-artifact@v3
         with:
